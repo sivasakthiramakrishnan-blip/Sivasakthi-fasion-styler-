@@ -1,0 +1,62 @@
+[
+  {
+    "occasion": "casual",
+    "style": "minimalist",
+    "color": "neutral",
+    "budget": "low",
+    "prompt": "A minimalist outfit for rectangle body type women, occasion: casual, color theme: neutral, budget: low, including matching jewelry, shoes, handbag, highly detailed, photorealistic, fashion photography",
+    "image": "casual_minimalist"
+  },
+  {
+    "occasion": "casual",
+    "style": "minimalist",
+    "color": "neutral",
+    "budget": "low",
+    "prompt": "A minimalist outfit for rectangle body type women, occasion: casual, color theme: neutral, budget: low, following trends: faux fur, metallic textures, including matching jewelry, shoes, handbag, highly detailed, photorealistic, fashion photography",
+    "image": "casual_minimalist",
+    "wardrobe_items": [],
+    "trends_applied": [
+      "faux fur",
+      "metallic textures"
+    ]
+  },
+  {
+    "occasion": "casual",
+    "style": "minimalist",
+    "color": "neutral",
+    "budget": "low",
+    "prompt": "A minimalist outfit for rectangle body type men, occasion: casual, color theme: neutral, budget: low, following trends: faux fur, metallic textures, including matching jewelry, shoes, handbag, highly detailed, photorealistic, fashion photography",
+    "image": "casual_minimalist",
+    "wardrobe_items": [],
+    "trends_applied": [
+      "faux fur",
+      "metallic textures"
+    ]
+  },
+  {
+    "occasion": "casual",
+    "style": "minimalist",
+    "color": "neutral",
+    "budget": "low",
+    "prompt": "A minimalist outfit for rectangle body type women, occasion: casual, color theme: neutral, budget: low, following trends: faux fur, metallic textures, including matching jewelry, shoes, handbag, highly detailed, photorealistic, fashion photography",
+    "image": "casual_minimalist",
+    "wardrobe_items": [],
+    "trends_applied": [
+      "faux fur",
+      "metallic textures"
+    ]
+  },
+  {
+    "occasion": "casual",
+    "style": "minimalist",
+    "color": "neutral",
+    "budget": "low",
+    "prompt": "A minimalist outfit for rectangle body type women, occasion: casual, color theme: neutral, budget: low, following trends: faux fur, metallic textures, including matching jewelry, shoes, handbag, highly detailed, photorealistic, fashion photography",
+    "image": "casual_minimalist",
+    "wardrobe_items": [],
+    "trends_applied": [
+      "faux fur",
+      "metallic textures"
+    ]
+  }
+]
