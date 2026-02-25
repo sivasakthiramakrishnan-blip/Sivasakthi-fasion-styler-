@@ -1,0 +1,1939 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>StyleMind AI - Your Personal AI Stylist</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      :root {
+        --cream: #f5f0e8;
+        --charcoal: #1a1a1a;
+        --gold: #c9a96e;
+        --warm-gray: #8b8075;
+        --sage: #7c9478;
+        --blush: #e8d5c4;
+      }
+      body {
+        font-family: "DM Sans", sans-serif;
+        background: var(--cream);
+        color: var(--charcoal);
+        min-height: 100vh;
+      }
+      @keyframes fadeUp {
+        from {
+          opacity: 0;
+          transform: translateY(24px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      .fade-up {
+        animation: fadeUp 0.6s ease forwards;
+      }
+      nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 16px 32px;
+        border-bottom: 1px solid rgba(139, 128, 117, 0.15);
+        background: rgba(245, 240, 232, 0.95);
+        backdrop-filter: blur(10px);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+      .nav-logo {
+        font-family: "Playfair Display", serif;
+        font-size: 22px;
+        font-weight: 700;
+      }
+      .nav-logo span {
+        color: var(--gold);
+        font-style: italic;
+      }
+      .nav-tabs {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+      }
+      .nav-tab {
+        padding: 8px 16px;
+        border-radius: 20px;
+        border: 1.5px solid rgba(139, 128, 117, 0.2);
+        background: transparent;
+        cursor: pointer;
+        font-family: "DM Sans", sans-serif;
+        font-size: 13px;
+        color: var(--warm-gray);
+        transition: all 0.2s;
+      }
+      .nav-tab.active {
+        background: var(--charcoal);
+        color: var(--cream);
+        border-color: var(--charcoal);
+      }
+      .nav-tab:hover:not(.active) {
+        border-color: var(--gold);
+        color: var(--charcoal);
+      }
+      .page {
+        display: none;
+      }
+      .page.active {
+        display: block;
+      }
+      .hero {
+        text-align: center;
+        padding: 50px 24px 36px;
+      }
+      .hero-tag {
+        display: inline-block;
+        padding: 6px 20px;
+        background: var(--charcoal);
+        color: var(--cream);
+        border-radius: 20px;
+        font-size: 12px;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        margin-bottom: 20px;
+      }
+      .hero h1 {
+        font-family: "Playfair Display", serif;
+        font-size: clamp(36px, 6vw, 72px);
+        line-height: 1.05;
+        margin-bottom: 16px;
+      }
+      .hero h1 span {
+        color: var(--gold);
+        font-style: italic;
+      }
+      .hero p {
+        font-size: 16px;
+        color: var(--warm-gray);
+        max-width: 500px;
+        margin: 0 auto 28px;
+        line-height: 1.7;
+        font-weight: 300;
+      }
+      .feature-pills {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        justify-content: center;
+      }
+      .pill {
+        padding: 7px 16px;
+        border: 1px solid rgba(139, 128, 117, 0.25);
+        border-radius: 20px;
+        font-size: 13px;
+        color: var(--warm-gray);
+      }
+      .container {
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 0 24px 80px;
+      }
+      .card {
+        background: white;
+        border-radius: 20px;
+        padding: 32px;
+        box-shadow: 0 8px 40px rgba(26, 26, 26, 0.08);
+        margin-bottom: 24px;
+      }
+      .card-title {
+        font-family: "Playfair Display", serif;
+        font-size: 26px;
+        margin-bottom: 8px;
+      }
+      .card-title span {
+        color: var(--gold);
+        font-style: italic;
+      }
+      .card-subtitle {
+        color: var(--warm-gray);
+        font-size: 14px;
+        margin-bottom: 24px;
+      }
+      .form-group {
+        margin-bottom: 20px;
+      }
+      label {
+        display: block;
+        font-size: 11px;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        color: var(--warm-gray);
+        margin-bottom: 8px;
+        font-weight: 500;
+      }
+      select {
+        width: 100%;
+        padding: 14px 16px;
+        background: var(--cream);
+        border: 1.5px solid rgba(139, 128, 117, 0.2);
+        border-radius: 10px;
+        font-family: "DM Sans", sans-serif;
+        font-size: 15px;
+        color: var(--charcoal);
+        outline: none;
+        appearance: none;
+        transition: all 0.2s;
+      }
+      select:focus {
+        border-color: var(--gold);
+        background: white;
+      }
+      .options-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .option-btn {
+        padding: 9px 14px;
+        border-radius: 10px;
+        border: 1.5px solid rgba(139, 128, 117, 0.2);
+        background: var(--cream);
+        cursor: pointer;
+        font-family: "DM Sans", sans-serif;
+        font-size: 13px;
+        color: var(--warm-gray);
+        transition: all 0.15s;
+      }
+      .option-btn:hover {
+        border-color: var(--gold);
+      }
+      .option-btn.active {
+        border-color: var(--gold);
+        background: rgba(201, 169, 110, 0.1);
+        color: var(--charcoal);
+        font-weight: 500;
+      }
+      .divider {
+        height: 1px;
+        background: rgba(139, 128, 117, 0.12);
+        margin: 18px 0;
+      }
+      .btn-primary {
+        width: 100%;
+        padding: 16px;
+        background: var(--charcoal);
+        color: var(--cream);
+        border: none;
+        border-radius: 50px;
+        font-family: "DM Sans", sans-serif;
+        font-size: 16px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s;
+      }
+      .btn-primary:hover {
+        background: var(--gold);
+        color: var(--charcoal);
+      }
+      .btn-primary:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+      .btn-outline {
+        width: 100%;
+        padding: 14px;
+        background: transparent;
+        color: var(--charcoal);
+        border: 1.5px solid var(--charcoal);
+        border-radius: 50px;
+        font-family: "DM Sans", sans-serif;
+        font-size: 15px;
+        cursor: pointer;
+        transition: all 0.2s;
+        margin-top: 12px;
+      }
+      .btn-outline:hover {
+        background: var(--charcoal);
+        color: var(--cream);
+      }
+      .loading-card {
+        background: white;
+        border-radius: 20px;
+        padding: 36px;
+        box-shadow: 0 8px 40px rgba(26, 26, 26, 0.08);
+        margin-bottom: 32px;
+        display: none;
+      }
+      .spinner {
+        width: 40px;
+        height: 40px;
+        border: 3px solid rgba(201, 169, 110, 0.3);
+        border-top-color: var(--gold);
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+        margin: 0 auto 24px;
+      }
+      .loading-title {
+        font-family: "Playfair Display", serif;
+        font-size: 24px;
+        margin-bottom: 8px;
+        text-align: center;
+      }
+      .loading-title span {
+        color: var(--gold);
+        font-style: italic;
+      }
+      .loading-sub {
+        text-align: center;
+        color: var(--warm-gray);
+        font-size: 14px;
+        margin-bottom: 28px;
+      }
+      .agent-list {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .agent-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 16px;
+        border-radius: 10px;
+        border: 1px solid rgba(139, 128, 117, 0.15);
+        background: var(--cream);
+        transition: all 0.3s;
+      }
+      .agent-item.active {
+        border-color: var(--gold);
+        background: rgba(201, 169, 110, 0.06);
+      }
+      .agent-item.done {
+        border-color: rgba(124, 148, 120, 0.3);
+        background: rgba(124, 148, 120, 0.06);
+      }
+      .agent-icon {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 13px;
+        background: rgba(139, 128, 117, 0.1);
+        flex-shrink: 0;
+      }
+      .agent-name {
+        font-size: 14px;
+        color: var(--warm-gray);
+        flex: 1;
+      }
+      .agent-item.active .agent-name {
+        color: var(--charcoal);
+        font-weight: 500;
+      }
+      .agent-item.done .agent-name {
+        color: var(--sage);
+      }
+      .agent-status {
+        font-size: 12px;
+        color: var(--warm-gray);
+      }
+      .agent-item.active .agent-status {
+        color: var(--gold);
+      }
+      .agent-item.done .agent-status {
+        color: var(--sage);
+      }
+      .result-card {
+        background: white;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 8px 40px rgba(26, 26, 26, 0.08);
+        margin-bottom: 24px;
+        display: none;
+      }
+      .result-header {
+        background: var(--charcoal);
+        padding: 28px;
+      }
+      .result-label {
+        font-size: 11px;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.5);
+        margin-bottom: 8px;
+      }
+      .result-title {
+        font-family: "Playfair Display", serif;
+        font-size: 26px;
+        color: white;
+        font-style: italic;
+      }
+      .result-body {
+        padding: 28px;
+      }
+      .section-label {
+        font-size: 11px;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--warm-gray);
+        margin-bottom: 12px;
+        font-weight: 500;
+        margin-top: 20px;
+      }
+      .prompt-box {
+        background: var(--cream);
+        border-radius: 12px;
+        padding: 16px;
+        font-size: 14px;
+        line-height: 1.7;
+        border-left: 3px solid var(--gold);
+      }
+      .image-box {
+        border-radius: 12px;
+        overflow: hidden;
+        background: var(--cream);
+        min-height: 280px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .image-box img {
+        width: 100%;
+        border-radius: 12px;
+        display: block;
+      }
+      .image-placeholder {
+        text-align: center;
+        padding: 40px;
+        color: var(--warm-gray);
+      }
+      .image-placeholder .icon {
+        font-size: 48px;
+        margin-bottom: 12px;
+      }
+      .feedback-row {
+        display: flex;
+        gap: 12px;
+        justify-content: center;
+      }
+      .feedback-btn {
+        padding: 10px 24px;
+        border-radius: 50px;
+        border: 1.5px solid rgba(139, 128, 117, 0.3);
+        background: transparent;
+        cursor: pointer;
+        font-family: "DM Sans", sans-serif;
+        font-size: 14px;
+        transition: all 0.2s;
+      }
+      .feedback-btn.liked {
+        border-color: var(--sage);
+        color: var(--sage);
+        background: rgba(124, 148, 120, 0.08);
+      }
+      .feedback-btn.disliked {
+        border-color: #c97070;
+        color: #c97070;
+      }
+      .success-msg {
+        text-align: center;
+        padding: 12px;
+        background: rgba(124, 148, 120, 0.1);
+        border-radius: 10px;
+        color: var(--sage);
+        font-size: 14px;
+        margin-top: 12px;
+        display: none;
+      }
+      .trend-box {
+        background: var(--charcoal);
+        border-radius: 12px;
+        padding: 16px;
+        margin-top: 8px;
+      }
+      .trend-chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 10px;
+      }
+      .trend-chip {
+        padding: 5px 14px;
+        border-radius: 20px;
+        background: rgba(201, 169, 110, 0.2);
+        color: var(--gold);
+        font-size: 12px;
+        border: 1px solid rgba(201, 169, 110, 0.3);
+      }
+      .trend-chip.india {
+        background: rgba(124, 148, 120, 0.2);
+        color: #9dc49a;
+        border-color: rgba(124, 148, 120, 0.3);
+      }
+      .wardrobe-input {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 12px;
+      }
+      .wardrobe-input input {
+        flex: 1;
+        padding: 12px 16px;
+        background: var(--cream);
+        border: 1.5px solid rgba(139, 128, 117, 0.2);
+        border-radius: 10px;
+        font-family: "DM Sans", sans-serif;
+        font-size: 14px;
+        color: var(--charcoal);
+        outline: none;
+      }
+      .wardrobe-input input:focus {
+        border-color: var(--gold);
+        background: white;
+      }
+      .wardrobe-input button {
+        padding: 12px 20px;
+        background: var(--charcoal);
+        color: var(--cream);
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        font-size: 18px;
+        transition: all 0.2s;
+      }
+      .wardrobe-input button:hover {
+        background: var(--gold);
+      }
+      .wardrobe-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .wardrobe-tag {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 14px;
+        background: rgba(201, 169, 110, 0.1);
+        border: 1px solid rgba(201, 169, 110, 0.3);
+        border-radius: 20px;
+        font-size: 13px;
+        color: var(--charcoal);
+      }
+      .wardrobe-tag button {
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: var(--warm-gray);
+        font-size: 14px;
+        padding: 0;
+        line-height: 1;
+      }
+      .wardrobe-tag button:hover {
+        color: #c97070;
+      }
+      .camera-options {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+        margin-bottom: 24px;
+      }
+      .camera-option {
+        border: 2px dashed rgba(139, 128, 117, 0.3);
+        border-radius: 16px;
+        padding: 28px 20px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.2s;
+        background: var(--cream);
+      }
+      .camera-option:hover {
+        border-color: var(--gold);
+        background: rgba(201, 169, 110, 0.05);
+      }
+      .camera-option .icon {
+        font-size: 36px;
+        margin-bottom: 12px;
+      }
+      .camera-option h3 {
+        font-size: 15px;
+        font-weight: 500;
+        margin-bottom: 6px;
+      }
+      .camera-option p {
+        font-size: 13px;
+        color: var(--warm-gray);
+      }
+      #cameraPreview {
+        width: 100%;
+        border-radius: 12px;
+        display: none;
+        margin-bottom: 16px;
+      }
+      #uploadPreview {
+        width: 100%;
+        border-radius: 12px;
+        display: none;
+        margin-bottom: 16px;
+        max-height: 400px;
+        object-fit: cover;
+      }
+      #fileInput {
+        display: none;
+      }
+      .webcam-controls {
+        display: none;
+        gap: 10px;
+        margin-bottom: 16px;
+      }
+      .webcam-controls.visible {
+        display: flex;
+      }
+      .btn-capture {
+        flex: 1;
+        padding: 12px;
+        background: var(--gold);
+        color: white;
+        border: none;
+        border-radius: 50px;
+        font-family: "DM Sans", sans-serif;
+        font-size: 14px;
+        cursor: pointer;
+        font-weight: 500;
+      }
+      .btn-stop {
+        flex: 1;
+        padding: 12px;
+        background: #c97070;
+        color: white;
+        border: none;
+        border-radius: 50px;
+        font-family: "DM Sans", sans-serif;
+        font-size: 14px;
+        cursor: pointer;
+      }
+      .analysis-result {
+        background: var(--cream);
+        border-radius: 12px;
+        padding: 20px;
+        font-size: 14px;
+        line-height: 1.8;
+        white-space: pre-wrap;
+        border-left: 3px solid var(--gold);
+        display: none;
+        margin-top: 16px;
+      }
+      .tryon-result-box {
+        display: flex;
+        gap: 20px;
+        flex-wrap: wrap;
+        width: 100%;
+        margin-top: 16px;
+      }
+      .tryon-result-box .photo-side {
+        flex: 1;
+        min-width: 250px;
+      }
+      .tryon-result-box .analysis-side {
+        flex: 1;
+        min-width: 250px;
+      }
+      .tryon-result-box img {
+        width: 100%;
+        border-radius: 12px;
+        max-height: 400px;
+        object-fit: cover;
+      }
+      .tryon-analysis-box {
+        background: var(--cream);
+        border-radius: 12px;
+        padding: 20px;
+        font-size: 14px;
+        line-height: 1.8;
+        white-space: pre-wrap;
+        border-left: 3px solid var(--gold);
+        max-height: 400px;
+        overflow-y: auto;
+      }
+      .history-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+      .history-item {
+        background: white;
+        border-radius: 14px;
+        padding: 20px;
+        box-shadow: 0 4px 20px rgba(26, 26, 26, 0.06);
+        display: flex;
+        gap: 16px;
+        align-items: flex-start;
+      }
+      .history-icon {
+        width: 52px;
+        height: 52px;
+        border-radius: 12px;
+        background: var(--charcoal);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 22px;
+        flex-shrink: 0;
+      }
+      .history-info {
+        flex: 1;
+      }
+      .history-title {
+        font-weight: 600;
+        font-size: 15px;
+        margin-bottom: 4px;
+        text-transform: capitalize;
+      }
+      .history-meta {
+        font-size: 13px;
+        color: var(--warm-gray);
+      }
+      .history-tag {
+        display: inline-block;
+        padding: 3px 10px;
+        background: rgba(201, 169, 110, 0.12);
+        color: var(--gold);
+        border-radius: 10px;
+        font-size: 12px;
+        margin-top: 6px;
+        text-transform: capitalize;
+        margin-right: 4px;
+      }
+      .history-trend {
+        display: inline-block;
+        padding: 3px 10px;
+        background: rgba(124, 148, 120, 0.1);
+        color: var(--sage);
+        border-radius: 10px;
+        font-size: 12px;
+        margin-top: 6px;
+        margin-right: 4px;
+      }
+      .empty-history {
+        text-align: center;
+        padding: 60px 20px;
+        color: var(--warm-gray);
+      }
+      .empty-history .icon {
+        font-size: 48px;
+        margin-bottom: 16px;
+      }
+      .trends-page-card {
+        background: white;
+        border-radius: 16px;
+        padding: 24px;
+        box-shadow: 0 4px 20px rgba(26, 26, 26, 0.06);
+        margin-bottom: 16px;
+      }
+      .trends-page-card h3 {
+        font-family: "Playfair Display", serif;
+        font-size: 20px;
+        margin-bottom: 16px;
+      }
+      .trends-page-card h3 span {
+        color: var(--gold);
+        font-style: italic;
+      }
+      .color-dots {
+        display: flex;
+        gap: 16px;
+        flex-wrap: wrap;
+        margin-top: 10px;
+      }
+      .color-dot {
+        text-align: center;
+      }
+      .color-circle {
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        margin-bottom: 6px;
+        border: 3px solid white;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+      }
+      .color-name {
+        font-size: 11px;
+        color: var(--warm-gray);
+        max-width: 60px;
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <div class="nav-logo">Style<span>Mind</span></div>
+      <div class="nav-tabs">
+        <button class="nav-tab active" onclick="showPage('generate', this)">
+          ✨ Generate
+        </button>
+        <button class="nav-tab" onclick="showPage('wardrobe', this)">
+          📸 Wardrobe
+        </button>
+        <button class="nav-tab" onclick="showPage('tryon', this)">
+          🪞 Try-On
+        </button>
+        <button class="nav-tab" onclick="showPage('trends', this)">
+          📊 Trends
+        </button>
+        <button class="nav-tab" onclick="showPage('history', this)">
+          📋 History
+        </button>
+      </div>
+    </nav>
+
+    <!-- ═══════════ PAGE 1: GENERATE ═══════════ -->
+    <div class="page active" id="page-generate">
+      <div class="hero fade-up">
+        <span class="hero-tag"
+          >Agentic AI · Generative AI · Fashion Intelligence</span
+        >
+        <h1>Style<span>Mind</span> AI</h1>
+        <p>Your personal AI stylist powered by 5 intelligent agents.</p>
+        <div class="feature-pills">
+          <span class="pill">🤖 5 AI Agents</span>
+          <span class="pill">🥻 Indian & Western</span>
+          <span class="pill">👗 Wardrobe Aware</span>
+          <span class="pill">📊 Trend Driven</span>
+        </div>
+      </div>
+      <div class="container">
+        <div class="card fade-up" id="formCard">
+          <h2 class="card-title">Tell me about your <span>style</span></h2>
+          <p class="card-subtitle">
+            Our 5 AI agents will craft a complete look for you.
+          </p>
+          <div class="form-group">
+            <label>Occasion</label>
+            <div class="options-grid">
+              <button
+                class="option-btn active"
+                onclick="selectOption(this, 'occasion', 'casual')"
+              >
+                ☀️ Casual
+              </button>
+              <button
+                class="option-btn"
+                onclick="selectOption(this, 'occasion', 'formal')"
+              >
+                💼 Formal
+              </button>
+              <button
+                class="option-btn"
+                onclick="selectOption(this, 'occasion', 'party')"
+              >
+                🎉 Party
+              </button>
+              <button
+                class="option-btn"
+                onclick="selectOption(this, 'occasion', 'date')"
+              >
+                🌹 Date
+              </button>
+              <button
+                class="option-btn"
+                onclick="selectOption(this, 'occasion', 'wedding')"
+              >
+                💍 Wedding
+              </button>
+              <button
+                class="option-btn"
+                onclick="selectOption(this, 'occasion', 'festival')"
+              >
+                🪔 Festival
+              </button>
+              <button
+                class="option-btn"
+                onclick="selectOption(this, 'occasion', 'college')"
+              >
+                🎓 College
+              </button>
+              <button
+                class="option-btn"
+                onclick="selectOption(this, 'occasion', 'beach')"
+              >
+                🏖️ Beach
+              </button>
+              <button
+                class="option-btn"
+                onclick="selectOption(this, 'occasion', 'sports')"
+              >
+                ⚽ Sports
+              </button>
+              <button
+                class="option-btn"
+                onclick="selectOption(this, 'occasion', 'travel')"
+              >
+                ✈️ Travel
+              </button>
+            </div>
+          </div>
+          <div class="divider"></div>
+          <div class="form-group">
+            <label>Body Type</label>
+            <select id="body_type">
+              <option value="hourglass">⌛ Hourglass</option>
+              <option value="rectangle" selected>▭ Rectangle</option>
+              <option value="pear">🍐 Pear</option>
+              <option value="apple">🍎 Apple</option>
+              <option value="inverted_triangle">🔺 Inverted Triangle</option>
+              <option value="petite">🌸 Petite</option>
+              <option value="plus_size">💫 Plus Size</option>
+              <option value="athletic">💪 Athletic</option>
+            </select>
+          </div>
+          <div class="divider"></div>
+          <div class="form-group">
+            <label>Your Aesthetic</label>
+            <div class="options-grid">
+              <button
+                class="option-btn active"
+                onclick="selectOption(this, 'style', 'minimalist')"
+              >
+                Minimalist
+              </button>
+              <button
+                class="option-btn"
+                onclick="selectOption(this, 'style', 'maximalist')"
+              >
+                Maximalist
+              </button>
+              <button
+                class="option-btn"
+                onclick="selectOption(this, 'style', 'boho')"
+              >
+                🌿 Boho
+              </button>
+              <button
+                class="option-btn"
+                onclick="selectOption(this, 'style', 'streetwear')"
+              >
+                🧢 Streetwear
+              </button>
+              <button
+                class="option-btn"
+                onclick="selectOption(this, 'style', 'saree')"
+              >
+                🥻 Saree
+              </button>
+              <button
+                class="option-btn"
+                onclick="selectOption(this, 'style', 'lehenga')"
+              >
+                👘 Lehenga
+              </button>
+              <button
+                class="option-btn"
+                onclick="selectOption(this, 'style', 'kurta')"
+              >
+                🧡 Kurta
+              </button>
+              <button
+                class="option-btn"
+                onclick="selectOption(this, 'style', 'indo_western')"
+              >
+                ✨ Indo Western
+              </button>
+              <button
+                class="option-btn"
+                onclick="selectOption(this, 'style', 'classic')"
+              >
+                🎩 Classic
+              </button>
+              <button
+                class="option-btn"
+                onclick="selectOption(this, 'style', 'romantic')"
+              >
+                🌸 Romantic
+              </button>
+              <button
+                class="option-btn"
+                onclick="selectOption(this, 'style', 'edgy')"
+              >
+                ⚡ Edgy
+              </button>
+              <button
+                class="option-btn"
+                onclick="selectOption(this, 'style', 'preppy')"
+              >
+                📚 Preppy
+              </button>
+            </div>
+          </div>
+          <div class="divider"></div>
+          <div class="form-group">
+            <label>Colour Theme</label>
+            <div class="options-grid">
+              <button
+                class="option-btn active"
+                onclick="selectOption(this, 'color', 'neutral')"
+              >
+                🤍 Neutral
+              </button>
+              <button
+                class="option-btn"
+                onclick="selectOption(this, 'color', 'earthy')"
+              >
+                🤎 Earthy
+              </button>
+              <button
+                class="option-btn"
+                onclick="selectOption(this, 'color', 'pastel')"
+              >
+                🩷 Pastel
+              </button>
+              <button
+                class="option-btn"
+                onclick="selectOption(this, 'color', 'bold')"
+              >
+                ❤️ Bold
+              </button>
+              <button
+                class="option-btn"
+                onclick="selectOption(this, 'color', 'monochrome')"
+              >
+                🖤 Monochrome
+              </button>
+              <button
+                class="option-btn"
+                onclick="selectOption(this, 'color', 'jewel_tones')"
+              >
+                💎 Jewel Tones
+              </button>
+              <button
+                class="option-btn"
+                onclick="selectOption(this, 'color', 'neon')"
+              >
+                💚 Neon
+              </button>
+              <button
+                class="option-btn"
+                onclick="selectOption(this, 'color', 'red_gold')"
+              >
+                🔴 Red & Gold
+              </button>
+              <button
+                class="option-btn"
+                onclick="selectOption(this, 'color', 'pink_purple')"
+              >
+                💜 Pink & Purple
+              </button>
+              <button
+                class="option-btn"
+                onclick="selectOption(this, 'color', 'blue_silver')"
+              >
+                💙 Blue & Silver
+              </button>
+            </div>
+          </div>
+          <div class="divider"></div>
+          <div class="form-group">
+            <label>Budget Range</label>
+            <div class="options-grid">
+              <button
+                class="option-btn"
+                onclick="selectOption(this, 'budget', 'very_low')"
+              >
+                💵 Under ₹500
+              </button>
+              <button
+                class="option-btn active"
+                onclick="selectOption(this, 'budget', 'low')"
+              >
+                💵 ₹500-₹1500
+              </button>
+              <button
+                class="option-btn"
+                onclick="selectOption(this, 'budget', 'medium')"
+              >
+                💰 ₹1500-₹5000
+              </button>
+              <button
+                class="option-btn"
+                onclick="selectOption(this, 'budget', 'high')"
+              >
+                💎 ₹5000-₹15000
+              </button>
+              <button
+                class="option-btn"
+                onclick="selectOption(this, 'budget', 'luxury')"
+              >
+                👑 ₹15000+
+              </button>
+            </div>
+          </div>
+          <div class="divider"></div>
+          <div class="form-group">
+            <label>Style For</label>
+            <div class="options-grid">
+              <button
+                class="option-btn active"
+                onclick="selectOption(this, 'gender', 'women')"
+              >
+                👩 Women
+              </button>
+              <button
+                class="option-btn"
+                onclick="selectOption(this, 'gender', 'men')"
+              >
+                👨 Men
+              </button>
+              <button
+                class="option-btn"
+                onclick="selectOption(this, 'gender', 'unisex')"
+              >
+                🧑 Unisex
+              </button>
+            </div>
+          </div>
+          <div class="divider"></div>
+          <div class="form-group">
+            <label>Your Wardrobe Items (Optional)</label>
+            <p
+              style="
+                font-size: 13px;
+                color: var(--warm-gray);
+                margin-bottom: 12px;
+              "
+            >
+              Tell us what you already own — AI will style around it!
+            </p>
+            <div class="wardrobe-input">
+              <input
+                type="text"
+                id="wardrobeInput"
+                placeholder="e.g. white shirt, blue jeans..."
+                onkeypress="if (event.key === 'Enter') addWardrobeItem();"
+              />
+              <button onclick="addWardrobeItem()">+</button>
+            </div>
+            <div class="wardrobe-tags" id="wardrobeTags"></div>
+          </div>
+          <button class="btn-primary" onclick="generateOutfit()" id="submitBtn">
+            ✨ Generate My AI Look
+          </button>
+        </div>
+
+        <!-- LOADING -->
+        <div class="loading-card" id="loadingCard">
+          <div class="spinner"></div>
+          <h2 class="loading-title">Crafting your <span>perfect look</span></h2>
+          <p class="loading-sub">
+            Your 5-agent AI team is working in real-time
+          </p>
+          <div class="agent-list">
+            <div class="agent-item" id="agent0">
+              <div class="agent-icon">🎯</div>
+              <span class="agent-name"
+                >Planner Agent — Mapping your occasion</span
+              ><span class="agent-status">Waiting</span>
+            </div>
+            <div class="agent-item" id="agent1">
+              <div class="agent-icon">👗</div>
+              <span class="agent-name"
+                >Style Analysis Agent — Reading your aesthetic</span
+              ><span class="agent-status">Waiting</span>
+            </div>
+            <div class="agent-item" id="agent2">
+              <div class="agent-icon">📊</div>
+              <span class="agent-name"
+                >Trend Intelligence Agent — Scanning trends</span
+              ><span class="agent-status">Waiting</span>
+            </div>
+            <div class="agent-item" id="agent3">
+              <div class="agent-icon">💰</div>
+              <span class="agent-name"
+                >Budget Optimizer — Finding best value</span
+              ><span class="agent-status">Waiting</span>
+            </div>
+            <div class="agent-item" id="agent4">
+              <div class="agent-icon">✨</div>
+              <span class="agent-name"
+                >Accessory Agent — Completing the look</span
+              ><span class="agent-status">Waiting</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- RESULT -->
+        <div class="result-card" id="resultCard">
+          <div class="result-header">
+            <p class="result-label">AI Generated Look</p>
+            <h2 class="result-title" id="resultTitle">Your Perfect Outfit</h2>
+          </div>
+          <div class="result-body">
+            <p class="section-label">Outfit Prompt</p>
+            <div class="prompt-box" id="promptBox"></div>
+            <p class="section-label">Generated Outfit</p>
+            <div class="image-box" id="imageBox">
+              <div class="image-placeholder">
+                <div class="icon">👗</div>
+                <p>Generating...</p>
+              </div>
+            </div>
+            <p class="section-label">Trend Report</p>
+            <div class="trend-box" id="trendBox" style="display: none">
+              <p
+                style="
+                  color: rgba(255, 255, 255, 0.6);
+                  font-size: 12px;
+                  letter-spacing: 1px;
+                  text-transform: uppercase;
+                  margin-bottom: 6px;
+                "
+              >
+                Applied Trends
+              </p>
+              <div class="trend-chips" id="trendChips"></div>
+              <p
+                style="
+                  color: rgba(255, 255, 255, 0.6);
+                  font-size: 12px;
+                  letter-spacing: 1px;
+                  text-transform: uppercase;
+                  margin-top: 14px;
+                  margin-bottom: 6px;
+                "
+              >
+                India Trending Now
+              </p>
+              <div class="trend-chips" id="indiaTrendChips"></div>
+            </div>
+            <p class="section-label">Your Feedback</p>
+            <div class="feedback-row">
+              <button class="feedback-btn" onclick="sendFeedback(true, this)">
+                ❤️ Love this
+              </button>
+              <button class="feedback-btn" onclick="sendFeedback(false, this)">
+                👎 Not my style
+              </button>
+            </div>
+            <div class="success-msg" id="successMsg">
+              ✓ Feedback saved! Style profile updated.
+            </div>
+            <button class="btn-outline" onclick="tryAgain()">
+              ← Try Another Look
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════ PAGE 2: WARDROBE ═══════════ -->
+    <div class="page" id="page-wardrobe">
+      <div class="hero fade-up">
+        <span class="hero-tag"
+          >Computer Vision · Gemini AI · Style Analysis</span
+        >
+        <h1>📸 Wardrobe <span>Analyser</span></h1>
+        <p>
+          Click or upload a photo of your clothing for instant AI styling tips!
+        </p>
+      </div>
+      <div class="container">
+        <div class="card">
+          <h2 class="card-title">Analyse your <span>wardrobe</span></h2>
+          <p class="card-subtitle">Powered by Google Gemini Vision AI</p>
+          <div class="camera-options">
+            <div class="camera-option" onclick="startWebcam()">
+              <div class="icon">📷</div>
+              <h3>Use Camera</h3>
+              <p>Take a live photo using webcam</p>
+            </div>
+            <div
+              class="camera-option"
+              onclick="document.getElementById('fileInput').click()"
+            >
+              <div class="icon">🖼️</div>
+              <h3>Upload Photo</h3>
+              <p>Choose from your gallery</p>
+            </div>
+          </div>
+          <input
+            type="file"
+            id="fileInput"
+            accept="image/*"
+            onchange="handleFileUpload(event)"
+          />
+          <video id="cameraPreview" autoplay playsinline></video>
+          <div class="webcam-controls" id="webcamControls">
+            <button class="btn-capture" onclick="capturePhoto()">
+              📸 Capture Photo
+            </button>
+            <button class="btn-stop" onclick="stopWebcam()">
+              ✕ Stop Camera
+            </button>
+          </div>
+          <img id="uploadPreview" alt="Preview" />
+          <canvas id="canvas" style="display: none"></canvas>
+          <button
+            class="btn-primary"
+            id="analyseBtn"
+            onclick="analyseWardrobe()"
+            style="display: none"
+          >
+            🔍 Analyse This Item
+          </button>
+          <div
+            id="analyseLoading"
+            style="display: none; text-align: center; padding: 20px"
+          >
+            <div class="spinner"></div>
+            <p
+              style="color: var(--warm-gray); font-size: 14px; margin-top: 8px"
+            >
+              Gemini AI is analysing your outfit...
+            </p>
+          </div>
+          <div class="analysis-result" id="analysisResult"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════ PAGE 3: VIRTUAL TRY-ON ═══════════ -->
+    <div class="page" id="page-tryon">
+      <div class="hero fade-up">
+        <span class="hero-tag"
+          >Virtual Try-On · Gemini Vision · Personal Styling</span
+        >
+        <h1>🪞 Virtual <span>Try-On</span></h1>
+        <p>
+          Upload your photo — Gemini AI will give you a complete personal
+          styling consultation!
+        </p>
+      </div>
+      <div class="container">
+        <div class="card">
+          <h2 class="card-title">Your personal <span>stylist</span></h2>
+          <p class="card-subtitle">
+            Upload your photo and get AI-powered outfit recommendations tailored
+            to YOU.
+          </p>
+          <div class="form-group">
+            <label>Step 1 — Upload Your Photo</label>
+            <div
+              class="camera-option"
+              onclick="document.getElementById('tryonFileInput').click()"
+              style="margin-bottom: 16px"
+            >
+              <div class="icon">🤳</div>
+              <h3>Upload Your Photo</h3>
+              <p>Full body photo works best</p>
+            </div>
+            <input
+              type="file"
+              id="tryonFileInput"
+              accept="image/*"
+              onchange="handleTryonUpload(event)"
+              style="display: none"
+            />
+            <img
+              id="tryonPreview"
+              style="
+                width: 100%;
+                border-radius: 12px;
+                display: none;
+                margin-bottom: 16px;
+                max-height: 400px;
+                object-fit: cover;
+              "
+              alt="Your photo"
+            />
+          </div>
+          <div class="form-group">
+            <label>Step 2 — Select Outfit Style</label>
+            <div class="options-grid">
+              <button
+                class="option-btn active"
+                onclick="selectOption(this, 'tryonStyle', 'casual')"
+              >
+                ☀️ Casual
+              </button>
+              <button
+                class="option-btn"
+                onclick="selectOption(this, 'tryonStyle', 'formal')"
+              >
+                💼 Formal
+              </button>
+              <button
+                class="option-btn"
+                onclick="selectOption(this, 'tryonStyle', 'party')"
+              >
+                🎉 Party
+              </button>
+              <button
+                class="option-btn"
+                onclick="selectOption(this, 'tryonStyle', 'saree')"
+              >
+                🥻 Saree
+              </button>
+              <button
+                class="option-btn"
+                onclick="selectOption(this, 'tryonStyle', 'lehenga')"
+              >
+                👘 Lehenga
+              </button>
+              <button
+                class="option-btn"
+                onclick="selectOption(this, 'tryonStyle', 'wedding')"
+              >
+                💍 Wedding
+              </button>
+            </div>
+          </div>
+          <button class="btn-primary" id="tryonBtn" onclick="generateTryon()">
+            🪞 Get My Style Consultation
+          </button>
+          <div
+            id="tryonLoading"
+            style="
+              display: none;
+              text-align: center;
+              padding: 24px;
+              margin-top: 16px;
+            "
+          >
+            <div class="spinner"></div>
+            <p
+              style="color: var(--warm-gray); font-size: 14px; margin-top: 12px"
+            >
+              Gemini AI is analysing your photo...
+            </p>
+            <p style="color: var(--gold); font-size: 13px; margin-top: 6px">
+              Creating your personal style consultation ✨
+            </p>
+          </div>
+          <div id="tryonResult" style="display: none; margin-top: 20px">
+            <p class="section-label">Your Personal Style Consultation</p>
+            <div id="tryonPreviewBox"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════ PAGE 4: TRENDS ═══════════ -->
+    <div class="page" id="page-trends">
+      <div class="hero fade-up">
+        <span class="hero-tag"
+          >Trend Intelligence · Season Aware · Fashion Feed</span
+        >
+        <h1>📊 Trend <span>Report</span></h1>
+        <p>Live fashion trends powering your outfit recommendations.</p>
+      </div>
+      <div class="container">
+        <div class="trends-page-card">
+          <h3>🌍 Global <span>Trending</span></h3>
+          <div class="trend-chips" id="globalTrends">
+            <span style="color: var(--warm-gray); font-size: 13px"
+              >Loading...</span
+            >
+          </div>
+        </div>
+        <div class="trends-page-card">
+          <h3>🇮🇳 India <span>Trending</span></h3>
+          <div class="trend-chips" id="indiaTrends">
+            <span style="color: var(--warm-gray); font-size: 13px"
+              >Loading...</span
+            >
+          </div>
+        </div>
+        <div class="trends-page-card">
+          <h3>🎨 Trending <span>Colours</span></h3>
+          <div class="color-dots" id="trendColors">
+            <span style="color: var(--warm-gray); font-size: 13px"
+              >Loading...</span
+            >
+          </div>
+        </div>
+        <div class="trends-page-card">
+          <h3>👗 Must-Have <span>Pieces</span></h3>
+          <div class="trend-chips" id="trendPieces">
+            <span style="color: var(--warm-gray); font-size: 13px"
+              >Loading...</span
+            >
+          </div>
+        </div>
+        <div class="trends-page-card">
+          <h3>📅 This <span>Season</span></h3>
+          <div class="trend-chips" id="seasonTrends">
+            <span style="color: var(--warm-gray); font-size: 13px"
+              >Loading...</span
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════ PAGE 5: HISTORY ═══════════ -->
+    <div class="page" id="page-history">
+      <div class="hero fade-up">
+        <span class="hero-tag">Your Style Journey</span>
+        <h1>Outfit <span>History</span></h1>
+        <p>All your AI generated looks in one place.</p>
+      </div>
+      <div class="container">
+        <div class="card">
+          <h2 class="card-title">Your past <span>looks</span></h2>
+          <p class="card-subtitle">Every outfit our AI has created for you.</p>
+          <div class="history-grid" id="historyGrid">
+            <div class="empty-history">
+              <div class="icon">👗</div>
+              <p>No outfits yet! Go to Generate tab.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const selections = {
+        occasion: "casual",
+        style: "minimalist",
+        color: "neutral",
+        budget: "low",
+        gender: "women",
+        tryonStyle: "casual",
+      };
+      let currentOutfitName = "";
+      let stream = null;
+      let capturedImageData = null;
+      let tryonImageData = null;
+      let wardrobeItems = [];
+
+      function showPage(page, btn) {
+        document
+          .querySelectorAll(".page")
+          .forEach((p) => p.classList.remove("active"));
+        document
+          .querySelectorAll(".nav-tab")
+          .forEach((t) => t.classList.remove("active"));
+        document.getElementById("page-" + page).classList.add("active");
+        if (btn) btn.classList.add("active");
+        if (page === "history") loadHistory();
+        if (page === "trends") loadTrends();
+      }
+
+      function selectOption(btn, field, value) {
+        btn
+          .closest(".options-grid")
+          .querySelectorAll(".option-btn")
+          .forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+        selections[field] = value;
+      }
+
+      function addWardrobeItem() {
+        const input = document.getElementById("wardrobeInput");
+        const val = input.value.trim();
+        if (!val) return;
+        wardrobeItems.push(val);
+        renderWardrobeTags();
+        input.value = "";
+      }
+
+      function removeWardrobeItem(index) {
+        wardrobeItems.splice(index, 1);
+        renderWardrobeTags();
+      }
+
+      function renderWardrobeTags() {
+        document.getElementById("wardrobeTags").innerHTML = wardrobeItems
+          .map(
+            (item, i) => `
+            <div class="wardrobe-tag">${item}<button onclick="removeWardrobeItem(${i})">✕</button></div>
+        `,
+          )
+          .join("");
+      }
+
+      async function generateOutfit() {
+        const submitBtn = document.getElementById("submitBtn");
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Generating...";
+        document.getElementById("formCard").style.display = "none";
+        document.getElementById("loadingCard").style.display = "block";
+        document.getElementById("resultCard").style.display = "none";
+        await animateAgents();
+        const body = {
+          occasion: selections.occasion,
+          body_type: document.getElementById("body_type").value,
+          style: selections.style,
+          color: selections.color,
+          budget: selections.budget,
+          gender: selections.gender,
+          wardrobe: wardrobeItems,
+        };
+        currentOutfitName = `${body.occasion}_${body.style}`;
+        try {
+          const response = await fetch(
+            "http://localhost:5000/generate-outfit",
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(body),
+            },
+          );
+          const data = await response.json();
+          document.getElementById("loadingCard").style.display = "none";
+          document.getElementById("resultCard").style.display = "block";
+          const titles = {
+            wedding: "Bridal Elegance Redefined",
+            festival: "Festive Glow Look",
+            formal: "Power Dressing Redefined",
+            party: "Night to Remember",
+            date: "Romantic Minimalism",
+            college: "Campus Chic Look",
+            beach: "Beach Ready Vibes",
+            travel: "Travel in Style",
+            sports: "Sporty & Stylish",
+            casual: "Effortless Everyday Edit",
+          };
+          document.getElementById("resultTitle").textContent =
+            titles[body.occasion] || "Your AI Look";
+          document.getElementById("promptBox").textContent =
+            data.prompt_used || "";
+          if (data.image_path && !data.image_path.startsWith("Error")) {
+            document.getElementById("imageBox").innerHTML =
+              `<img src="http://localhost:5000/image/${currentOutfitName}?t=${Date.now()}" alt="Generated Outfit" onerror="showImagePlaceholder()">`;
+          } else {
+            showImagePlaceholder();
+          }
+          if (data.trends) {
+            document.getElementById("trendBox").style.display = "block";
+            document.getElementById("trendChips").innerHTML =
+              data.trends.seasonal_trends
+                .map((t) => `<span class="trend-chip">${t}</span>`)
+                .join("");
+            document.getElementById("indiaTrendChips").innerHTML =
+              data.trends.india_trends
+                .map((t) => `<span class="trend-chip india">${t}</span>`)
+                .join("");
+          }
+        } catch (err) {
+          document.getElementById("loadingCard").style.display = "none";
+          document.getElementById("resultCard").style.display = "block";
+          document.getElementById("resultTitle").textContent = "Your AI Look";
+          document.getElementById("promptBox").textContent =
+            `A ${selections.style} outfit, occasion: ${selections.occasion}`;
+          showImagePlaceholder();
+        }
+        submitBtn.disabled = false;
+        submitBtn.textContent = "✨ Generate My AI Look";
+      }
+
+      function showImagePlaceholder() {
+        document.getElementById("imageBox").innerHTML =
+          `<div class="image-placeholder"><div class="icon">✨</div><p>Outfit ready! Check generated folder.</p></div>`;
+      }
+
+      async function animateAgents() {
+        for (let i = 0; i < 5; i++) {
+          const agent = document.getElementById(`agent${i}`);
+          agent.classList.add("active");
+          agent.querySelector(".agent-status").textContent = "Processing...";
+          await new Promise((r) => setTimeout(r, 900));
+          agent.classList.remove("active");
+          agent.classList.add("done");
+          agent.querySelector(".agent-icon").textContent = "✓";
+          agent.querySelector(".agent-status").textContent = "Done";
+        }
+      }
+
+      async function sendFeedback(liked, btn) {
+        btn.classList.add(liked ? "liked" : "disliked");
+        try {
+          await fetch("http://localhost:5000/feedback", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ outfit_name: currentOutfitName, liked }),
+          });
+        } catch (e) {}
+        document.getElementById("successMsg").style.display = "block";
+      }
+
+      function tryAgain() {
+        document.getElementById("resultCard").style.display = "none";
+        document.getElementById("formCard").style.display = "block";
+        document.getElementById("successMsg").style.display = "none";
+        document.getElementById("trendBox").style.display = "none";
+        for (let i = 0; i < 5; i++) {
+          const agent = document.getElementById(`agent${i}`);
+          agent.classList.remove("active", "done");
+          agent.querySelector(".agent-status").textContent = "Waiting";
+          agent.querySelector(".agent-icon").textContent = [
+            "🎯",
+            "👗",
+            "📊",
+            "💰",
+            "✨",
+          ][i];
+        }
+      }
+
+      async function startWebcam() {
+        try {
+          stream = await navigator.mediaDevices.getUserMedia({ video: true });
+          const video = document.getElementById("cameraPreview");
+          video.srcObject = stream;
+          video.style.display = "block";
+          document.getElementById("webcamControls").classList.add("visible");
+          document.getElementById("uploadPreview").style.display = "none";
+          document.getElementById("analyseBtn").style.display = "none";
+        } catch (err) {
+          alert("Camera not accessible. Use Upload instead.");
+        }
+      }
+
+      function capturePhoto() {
+        const video = document.getElementById("cameraPreview");
+        const canvas = document.getElementById("canvas");
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        canvas.getContext("2d").drawImage(video, 0, 0);
+        capturedImageData = canvas.toDataURL("image/jpeg");
+        document.getElementById("uploadPreview").src = capturedImageData;
+        document.getElementById("uploadPreview").style.display = "block";
+        document.getElementById("analyseBtn").style.display = "block";
+        stopWebcam();
+      }
+
+      function stopWebcam() {
+        if (stream) {
+          stream.getTracks().forEach((t) => t.stop());
+          stream = null;
+        }
+        document.getElementById("cameraPreview").style.display = "none";
+        document.getElementById("webcamControls").classList.remove("visible");
+      }
+
+      function handleFileUpload(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          capturedImageData = e.target.result;
+          document.getElementById("uploadPreview").src = capturedImageData;
+          document.getElementById("uploadPreview").style.display = "block";
+          document.getElementById("analyseBtn").style.display = "block";
+          document.getElementById("analysisResult").style.display = "none";
+        };
+        reader.readAsDataURL(file);
+      }
+
+      async function analyseWardrobe() {
+        if (!capturedImageData) {
+          alert("Please capture or upload an image first!");
+          return;
+        }
+        document.getElementById("analyseBtn").style.display = "none";
+        document.getElementById("analyseLoading").style.display = "block";
+        document.getElementById("analysisResult").style.display = "none";
+        try {
+          const response = await fetch(
+            "http://localhost:5000/analyze-wardrobe",
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ image: capturedImageData }),
+            },
+          );
+          const data = await response.json();
+          document.getElementById("analyseLoading").style.display = "none";
+          const resultDiv = document.getElementById("analysisResult");
+          resultDiv.style.display = "block";
+          resultDiv.textContent = data.analysis || "Analysis complete!";
+        } catch (err) {
+          document.getElementById("analyseLoading").style.display = "none";
+          document.getElementById("analysisResult").style.display = "block";
+          document.getElementById("analysisResult").textContent =
+            "Error! Make sure Flask server is running.";
+        }
+        document.getElementById("analyseBtn").style.display = "block";
+      }
+
+      function handleTryonUpload(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          tryonImageData = e.target.result;
+          document.getElementById("tryonPreview").src = tryonImageData;
+          document.getElementById("tryonPreview").style.display = "block";
+        };
+        reader.readAsDataURL(file);
+      }
+
+      async function generateTryon() {
+        if (!tryonImageData) {
+          alert("Please upload your photo first!");
+          return;
+        }
+        document.getElementById("tryonBtn").disabled = true;
+        document.getElementById("tryonBtn").textContent = "Analysing...";
+        document.getElementById("tryonLoading").style.display = "block";
+        document.getElementById("tryonResult").style.display = "none";
+        try {
+          const response = await fetch("http://localhost:5000/tryon", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              image: tryonImageData,
+              style: selections.tryonStyle,
+            }),
+          });
+          const data = await response.json();
+          document.getElementById("tryonLoading").style.display = "none";
+          document.getElementById("tryonResult").style.display = "block";
+          document.getElementById("tryonPreviewBox").innerHTML = `
+                <div class="tryon-result-box">
+                    <div class="photo-side">
+                        <p style="font-size:11px; letter-spacing:2px; text-transform:uppercase; color:var(--warm-gray); margin-bottom:10px;">Your Photo</p>
+                        <img src="${tryonImageData}" alt="Your photo">
+                    </div>
+                    <div class="analysis-side">
+                        <p style="font-size:11px; letter-spacing:2px; text-transform:uppercase; color:var(--warm-gray); margin-bottom:10px;">✨ AI Style Consultation</p>
+                        <div class="tryon-analysis-box">${data.analysis || "Consultation complete!"}</div>
+                    </div>
+                </div>`;
+        } catch (err) {
+          document.getElementById("tryonLoading").style.display = "none";
+          document.getElementById("tryonResult").style.display = "block";
+          document.getElementById("tryonPreviewBox").innerHTML = `
+                <div style="padding:20px; color:var(--warm-gray); text-align:center;">
+                    <div style="font-size:40px; margin-bottom:12px;">⚠️</div>
+                    <p>Could not connect to server. Make sure Flask is running!</p>
+                </div>`;
+        }
+        document.getElementById("tryonBtn").disabled = false;
+        document.getElementById("tryonBtn").textContent =
+          "🪞 Get My Style Consultation";
+      }
+
+      async function loadTrends() {
+        try {
+          const response = await fetch("http://localhost:5000/trends");
+          const data = await response.json();
+          const colorMap = {
+            "butter yellow": "#F5DEB3",
+            lavender: "#C8A8E9",
+            "mint green": "#A8E6CF",
+            peach: "#FFDAB9",
+            ivory: "#FFFFF0",
+            coral: "#FF7F7F",
+            turquoise: "#40E0D0",
+            "hot pink": "#FF69B4",
+            white: "#F5F5F5",
+            "burnt orange": "#CC5500",
+            "chocolate brown": "#7B3F00",
+            "olive green": "#808000",
+            rust: "#B7410E",
+            camel: "#C19A6B",
+            "midnight blue": "#191970",
+            emerald: "#50C878",
+            burgundy: "#800020",
+            silver: "#C0C0C0",
+            black: "#1A1A1A",
+            "lime green": "#32CD32",
+          };
+          document.getElementById("globalTrends").innerHTML = data.global_trends
+            .map((t) => `<span class="trend-chip">${t}</span>`)
+            .join("");
+          document.getElementById("indiaTrends").innerHTML = data.india_trends
+            .map((t) => `<span class="trend-chip india">${t}</span>`)
+            .join("");
+          document.getElementById("seasonTrends").innerHTML =
+            data.seasonal_trends
+              .map((t) => `<span class="trend-chip">${t}</span>`)
+              .join("");
+          document.getElementById("trendPieces").innerHTML =
+            data.trending_pieces
+              .map((t) => `<span class="trend-chip">${t}</span>`)
+              .join("");
+          document.getElementById("trendColors").innerHTML =
+            data.trending_colors
+              .map(
+                (c) => `
+                <div class="color-dot">
+                    <div class="color-circle" style="background:${colorMap[c] || "#C9A96E"}"></div>
+                    <div class="color-name">${c}</div>
+                </div>`,
+              )
+              .join("");
+        } catch (err) {
+          document.getElementById("globalTrends").innerHTML =
+            '<span class="trend-chip">quiet luxury</span><span class="trend-chip">clean girl</span><span class="trend-chip">old money</span>';
+          document.getElementById("indiaTrends").innerHTML =
+            '<span class="trend-chip india">indo-western fusion</span><span class="trend-chip india">pastel lehengas</span>';
+          document.getElementById("seasonTrends").innerHTML =
+            '<span class="trend-chip">floral prints</span><span class="trend-chip">linen fabrics</span>';
+          document.getElementById("trendPieces").innerHTML =
+            '<span class="trend-chip">wide leg trousers</span><span class="trend-chip">linen blazers</span>';
+          document.getElementById("trendColors").innerHTML =
+            '<div class="color-dot"><div class="color-circle" style="background:#F5DEB3"></div><div class="color-name">butter yellow</div></div>';
+        }
+      }
+
+      async function loadHistory() {
+        try {
+          const response = await fetch("http://localhost:5000/history");
+          const data = await response.json();
+          const grid = document.getElementById("historyGrid");
+          if (!data.history || data.history.length === 0) {
+            grid.innerHTML = `<div class="empty-history"><div class="icon">👗</div><p>No outfits yet! Go to Generate tab.</p></div>`;
+            return;
+          }
+          const icons = {
+            casual: "☀️",
+            formal: "💼",
+            party: "🎉",
+            date: "🌹",
+            wedding: "💍",
+            festival: "🪔",
+            college: "🎓",
+            beach: "🏖️",
+            sports: "⚽",
+            travel: "✈️",
+          };
+          grid.innerHTML = data.history
+            .reverse()
+            .map(
+              (item) => `
+                <div class="history-item">
+                    <div class="history-icon">${icons[item.occasion] || "👗"}</div>
+                    <div class="history-info">
+                        <div class="history-title">${item.occasion} · ${item.style}</div>
+                        <div class="history-meta">Color: ${item.color} · Budget: ${item.budget}</div>
+                        <span class="history-tag">${item.style}</span>
+                        ${item.trends_applied ? item.trends_applied.map((t) => `<span class="history-trend">${t}</span>`).join("") : ""}
+                        ${item.wardrobe_items && item.wardrobe_items.length > 0 ? `<div style="font-size:12px;color:var(--warm-gray);margin-top:4px;">👗 Wardrobe: ${item.wardrobe_items.join(", ")}</div>` : ""}
+                    </div>
+                </div>`,
+            )
+            .join("");
+        } catch (err) {
+          document.getElementById("historyGrid").innerHTML =
+            `<div class="empty-history"><div class="icon">⚠️</div><p>Could not load history.</p></div>`;
+        }
+      }
+    </script>
+  </body>
+</html>
